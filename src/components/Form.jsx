@@ -17,7 +17,7 @@ export default function Form({ expansions, selectedExpansion }) {
       [username, reviewText, userRating, expansion]
     );
     revalidatePath("/expansions"); // Update the path to be revalidated as needed
-    redirect("/expansions");
+    // redirect("/expansions");
   }
 
   return (

@@ -13,7 +13,9 @@ export default async function Expansions() {
   return (
     <section className={expStyles.section}>
       <br />
-      <h1>Leave a review for any of the expansions!</h1>
+      <h1 className={expStyles.h1}>
+        Leave a review for any of the expansions!
+      </h1>
 
       <div className={expStyles.mapcontainer}>
         {expansions.map((exp) => (

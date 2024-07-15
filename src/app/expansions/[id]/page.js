@@ -2,8 +2,9 @@ import { dbConnect } from "@/utils/dbConnection";
 import Image from "next/image";
 import Form from "@/components/Form";
 import varExp from "./varexp.module.css";
+import Link from "next/link";
 
-export default async function ExpPages({ params }) {
+export default async function ExpPages({ params, searchParams }) {
   const db = dbConnect();
   const result = await db.query(`SELECT * FROM expansions WHERE id = $1`, [
     params.id,
@@ -14,8 +15,9 @@ export default async function ExpPages({ params }) {
     return <div>Expansion not found</div>;
   }
 
+  const sortOrder = searchParams.sort === "asc" ? "asc" : "desc";
   const commentResult = await db.query(
-    `SELECT * FROM reviews2 WHERE expansion_id = $1`,
+    `SELECT * FROM reviews2 WHERE expansion_id = $1 ORDER BY submission_date ${sortOrder.toUpperCase()}`,
     [params.id]
   );
   const userRes = commentResult.rows;
@@ -25,10 +27,16 @@ export default async function ExpPages({ params }) {
   );
   const allExpansions = allExpansionsResult.rows;
 
+  const options = {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  };
+
   return (
-    <section>
+    <section className={varExp.section}>
       <div className={varExp.maincontainer}>
-        <h1>{exp.exp_name}</h1>
+        <h1 className={varExp.h1}>{exp.exp_name}</h1>
         <Image
           src={exp.image_url}
           alt="expansion cover art"
@@ -41,16 +49,30 @@ export default async function ExpPages({ params }) {
       </div>
 
       <div>
-        <h1>User Reviews:</h1>
+        <h1 className={varExp.h1}>User Reviews:</h1>
+        <Link
+          href={`/expansions/${params.id}?sort=${
+            sortOrder === "asc" ? "desc" : "asc"
+          }`}
+        >
+          <button className={varExp.postbutton}>Sort date: {sortOrder}</button>
+        </Link>
       </div>
-      {userRes.map((post) => (
-        <div className={varExp.postcontainer} key={post.id}>
-          <h1>{post.username}</h1>
-          <p>{post.review_text}</p>
-          <p>{post.user_rating}</p>
-          <p>{new Date(post.submission_date).toLocaleString("en-GB")}</p>
-        </div>
-      ))}
+      <div className={varExp.posts}>
+        {userRes.map((post) => (
+          <div className={varExp.postcontainer} key={post.id}>
+            <h2 className={varExp.puser}>
+              Username:{" "}
+              <span className={varExp.puserlight}>{post.username}</span>
+            </h2>
+            <p className={varExp.p}>{post.review_text}</p>
+            <p className={varExp.p}>User Rating: {post.user_rating}</p>
+            <p className={varExp.pdate}>
+              {new Date(post.submission_date).toLocaleString("en-GB", options)}
+            </p>
+          </div>
+        ))}
+      </div>
     </section>
   );
 }
