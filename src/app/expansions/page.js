@@ -1,6 +1,7 @@
 import { dbConnect } from "@/utils/dbConnection";
 import Image from "next/image";
 import expStyles from "./exp.module.css";
+import Link from "next/link";
 
 export default async function Expansions() {
   const db = dbConnect();
@@ -23,6 +24,7 @@ export default async function Expansions() {
                 {exp.release_date.toLocaleDateString("en-GB")}
               </p>
               <p>Metacritic Rating: {exp.meta_rating}</p>
+              <Link href={`/expansions/${exp.id}`}>Leave your review!</Link>
             </div>
             <Image
               className={expStyles.expimage}

@@ -15,6 +15,8 @@ export default function Header() {
         <Link href="/expansions" className="text-pink-700 font-extrabold">
           Expansions
         </Link>
+        <br />
+        <Link href="/posts">Post a Review</Link>
       </nav>
     </section>
   );
