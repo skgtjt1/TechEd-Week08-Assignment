@@ -28,27 +28,32 @@ IMPORTANT: You don't have to make a generic blog with posts. It can be ANYTHING!
 
 🎯 Add static and dynamic metadata to your pages
 
-Stretch Goals
-🏹 Add a categories table to allow categorisation of posts at creation time using a dropdown menu. Add a /categories route that lists all categories, and a /categories/:id route that lists all posts in a category.
-
-🏹 Add a new /posts/:id/edit route that allows editing a post. Populate the form with the post data, and save changes by updating the post in the database with a server action.
-
-🏹 Add a delete button to the post page that removes the post from the database.
-
-🏹 Add a new /posts/:id/comments/:id/edit route that allows editing a comment. Populate the form with the comment data, and save changes by updating the comment in the database with a server action.
-
 Please also provide an assignment reflection in your project README.md file.
 (Required)
 🎯 Please mention the requirements you met and which goals you achieved for this assignment.
 
+- I think I met all the basic requirements. I wasn't well over the weekend or else I would have loved to add edit/delete functionality. It was nice to get the dynamic routes working and actually quite simple once you know what you're doing. I especially like how easy it is to add more pages in NextJS.
+
 🎯 Were there any requirements or goals that you were not quite able to achieve?
 
+- I would have liked to be more ambitious with the app, I really like how the basic functionality works right now.
+
 🎯 If so, could you please tell us what was it that you found difficult about these tasks?
+
+- I found it a little tricky to remember how to pass props from the expansion review page to the form component. I wanted to make sure the dropdown list was on the correct expansion by default. Having thought about it though, perhaps the dropdown list wasn't really necessary and the prop could be used to dynamically change the SQL post query.
 
 (Optional)
 🏹 Feel free to add any other reflections you would like to share about your submission e.g.
 
-What went really well and what could have gone better?
+## What went really well and what could have gone better?
+
+- I enjoyed getting used to Next.js server side routing.
+
 Detailing useful external sources that helped you complete the assignment (e.g Youtube tutorials).
+
+[CSS button styles](https://getcssscan.com/css-buttons-examples)
+
 Describing errors or bugs you encountered while completing your assignment.
 Requesting feedback about a specific part of your submission.
+
+![SQL schema](image.png)
