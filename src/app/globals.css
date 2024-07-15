@@ -31,3 +31,16 @@ body {
     text-wrap: balance;
   }
 }
+
+.logo {
+  will-change: filter;
+  transition: filter 0.3s;
+  filter: invert();
+  width: 50vw;
+}
+.logo:hover {
+  filter: drop-shadow(0 0 2em #15bae7);
+}
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #0cb6e6);
+}

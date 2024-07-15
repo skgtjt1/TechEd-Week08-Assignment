@@ -1,7 +1,7 @@
 import { dbConnect } from "@/utils/dbConnection";
-import { revalidatePath } from "next/cache";
 import Image from "next/image";
 import Form from "@/components/Form";
+import varExp from "./varexp.module.css";
 
 export default async function ExpPages({ params }) {
   const db = dbConnect();
@@ -14,17 +14,43 @@ export default async function ExpPages({ params }) {
     return <div>Expansion not found</div>;
   }
 
+  const commentResult = await db.query(
+    `SELECT * FROM reviews2 WHERE expansion_id = $1`,
+    [params.id]
+  );
+  const userRes = commentResult.rows;
+
+  const allExpansionsResult = await db.query(
+    `SELECT id, exp_name FROM expansions`
+  );
+  const allExpansions = allExpansionsResult.rows;
+
   return (
-    <div>
-      <h1>{exp.exp_name}</h1>
-      <Image
-        // className={expStyles.expimage}
-        src={exp.image_url}
-        alt="expansion cover art"
-        width={200}
-        height={300}
-      ></Image>
-      <Form></Form>
-    </div>
+    <section>
+      <div className={varExp.maincontainer}>
+        <h1>{exp.exp_name}</h1>
+        <Image
+          src={exp.image_url}
+          alt="expansion cover art"
+          width={200}
+          height={300}
+          className={varExp.image}
+        />
+        <br />
+        <Form expansions={allExpansions} selectedExpansion={exp.id} />
+      </div>
+
+      <div>
+        <h1>User Reviews:</h1>
+      </div>
+      {userRes.map((post) => (
+        <div className={varExp.postcontainer} key={post.id}>
+          <h1>{post.username}</h1>
+          <p>{post.review_text}</p>
+          <p>{post.user_rating}</p>
+          <p>{new Date(post.submission_date).toLocaleString("en-GB")}</p>
+        </div>
+      ))}
+    </section>
   );
 }

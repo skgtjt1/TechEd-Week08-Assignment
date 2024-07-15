@@ -3,9 +3,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import formStyles from "./form.module.css";
 
-export default async function Form() {
-  async function handleSubmit() {}
-
+export default function Form({ expansions, selectedExpansion }) {
   async function handleSubmit(formData) {
     "use server";
     const username = formData.get("username");
@@ -18,15 +16,13 @@ export default async function Form() {
       `INSERT INTO reviews2 (username, review_text, user_rating, expansion_id) VALUES ($1, $2, $3, $4)`,
       [username, reviewText, userRating, expansion]
     );
-    revalidatePath("/expansions"); //check where this needs to go
+    revalidatePath("/expansions"); // Update the path to be revalidated as needed
     redirect("/expansions");
   }
 
   return (
     <div>
-      {/* we add the handleSubmit to the form in an onSubmit event */}
       <form className={formStyles.form1} action={handleSubmit}>
-        {/* our classic for attribute is now called htmlFor. They are the same thing */}
         <label htmlFor="username">Username</label>
         <input
           type="text"
@@ -34,22 +30,24 @@ export default async function Form() {
           placeholder="Username"
           className={formStyles.input}
           required
-          //   we added the onChange event, so when the user types, the handleChange updates the value of the corresponding state variable
         />
         <label htmlFor="expansion">Expansion</label>
-        <select name="expansion" className={formStyles.input}>
+        <select
+          name="expansion"
+          className={formStyles.input}
+          required
+          defaultValue={selectedExpansion}
+        >
           <option value="" disabled>
             Select
           </option>
-          <option value={1}>Final Fantasy XIV 1.0</option>
-          <option value={2}>A Realm Reborn</option>
-          <option value={3}>Heavensward</option>
-          <option value={4}>Stormblood</option>
-          <option value={5}>Shadowbringers</option>
-          <option value={6}>Endwalker</option>
-          <option value={7}>Dawntrail</option>
+          {expansions.map((expansion) => (
+            <option key={expansion.id} value={expansion.id}>
+              {expansion.exp_name}
+            </option>
+          ))}
         </select>
-        <label htmlFor="review">User Review</label>
+        <label htmlFor="reviewText">User Review</label>
         <textarea
           type="text"
           name="reviewText"
@@ -57,14 +55,15 @@ export default async function Form() {
           className={formStyles.input}
           required
           id="textarea"
-          //   we added the onChange event, so when the user types, the handleChange updates the value of the corresponding state variable
         />
-        <label htmlFor="user_rating">User Rating (1-10)</label>
+        <label htmlFor="userRating">User Rating (1-10)</label>
         <input
           type="number"
           name="userRating"
           required
           className={formStyles.input}
+          min="1"
+          max="10"
         />
         <br />
         <button type="submit">Submit</button>

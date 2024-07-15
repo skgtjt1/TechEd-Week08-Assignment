@@ -12,8 +12,9 @@ export default async function Expansions() {
 
   return (
     <section className={expStyles.section}>
-      <h1>Expansions page</h1>
       <br />
+      <h1>Leave a review for any of the expansions!</h1>
+
       <div className={expStyles.mapcontainer}>
         {expansions.map((exp) => (
           <div className={expStyles.expcontainer} key={exp.id}>
@@ -24,7 +25,12 @@ export default async function Expansions() {
                 {exp.release_date.toLocaleDateString("en-GB")}
               </p>
               <p>Metacritic Rating: {exp.meta_rating}</p>
-              <Link href={`/expansions/${exp.id}`}>Leave your review!</Link>
+              <br />
+              <Link href={`/expansions/${exp.id}`}>
+                <button className={expStyles.postbutton}>
+                  Leave your review!
+                </button>
+              </Link>
             </div>
             <Image
               className={expStyles.expimage}
